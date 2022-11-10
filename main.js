@@ -32,12 +32,12 @@ function ShowData() {
     let tr = `
         <tr>
             <th scope="row">${computers[computers.length - 1].com_id}</th>
-            <td>${computers[computers.length - 1].com_system}</td>
-            <td>${computers[computers.length - 1].com_ram}</td>
-            <td>${computers[computers.length - 1].com_GB}</td>
+            <td id="edit_system">${computers[computers.length - 1].com_system}</td>
+            <td id="edit_ram">${computers[computers.length - 1].com_ram}</td>
+            <td id="edit_GB">${computers[computers.length - 1].com_GB}</td>
             <td>
                 <button class="btn btn-danger" onclick="Delete(this,${computers[computers.length - 1].com_id},event)">Sil</button>
-                <button class="btn btn-success">Yenilə</button>
+                <button class="btn btn-success" onclick="Update(this,${computers[computers.length - 1].com_id},event)">Yenilə</button>
             </td>
         </tr>
         `
@@ -80,7 +80,7 @@ function Delete(element, id, e) {
             }
         });
 }
-function WriteTHead() { 
+function WriteTHead() {
     let th = `
     <tr>
     <th scope="col">Sıra</th>
@@ -91,4 +91,31 @@ function WriteTHead() {
   </tr>
     `
     thead.innerHTML = th;
+}
+edit = true;
+function Update(element, id, e) {
+    e.preventDefault();
+    if (edit) {
+        tr = element.parentElement.parentElement;
+        tr.querySelector("#edit_system").contentEditable = true;
+        tr.querySelector("#edit_ram").contentEditable = true;
+        tr.querySelector("#edit_GB").contentEditable = true;
+        element.innerHTML = "Dəyşikliyi Yadda Saxla";
+        edit = false;
+    }
+    else {
+        tr.querySelector("#edit_system").contentEditable = false;
+        tr.querySelector("#edit_ram").contentEditable = false;
+        tr.querySelector("#edit_GB").contentEditable = false;
+        element.innerHTML = "Dəyişiklik qeydə alındı";
+
+        for (let i in computers) {
+            if (computers[i].com_id == id) {
+                computers[i].com_system = tr.querySelector("#edit_system").innerHTML;
+                computers[i].com_ram = tr.querySelector("#edit_system").innerHTML;
+                computers[i].com_GB = tr.querySelector("#edit_system").innerHTML;
+            }
+        }
+        edit=true;
+    }
 }
